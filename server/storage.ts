@@ -15,6 +15,7 @@ import {
   achievements, 
   playerAchievements 
 } from "@shared/schema";
+import { FIFTY_ACHIEVEMENTS } from "./achievements-data";
 import { randomUUID } from "crypto";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
@@ -61,63 +62,35 @@ export class MemStorage implements IStorage {
   }
 
   private initializeGameData() {
-    // Initialize default upgrades
+    // Initialize expanded upgrades for growing cannabis operation
     const defaultUpgrades: InsertUpgrade[] = [
-      {
-        name: "Better Fingers",
-        description: "+1 Kush per click",
-        baseCost: 15,
-        costMultiplier: 150,
-        clickPowerIncrease: 1,
-        autoIncomeIncrease: 0,
-        icon: "fas fa-hand-pointer",
-        category: "click",
-        unlockRequirement: 0
-      },
-      {
-        name: "Auto Clicker",
-        description: "+0.5 Kush per second",
-        baseCost: 100,
-        costMultiplier: 150,
-        clickPowerIncrease: 0,
-        autoIncomeIncrease: 1800, // 0.5 per second = 1800 per hour
-        icon: "fas fa-mouse-pointer",
-        category: "auto",
-        unlockRequirement: 50
-      },
-      {
-        name: "Lucky Fingers",
-        description: "+2 Kush per click",
-        baseCost: 500,
-        costMultiplier: 150,
-        clickPowerIncrease: 2,
-        autoIncomeIncrease: 0,
-        icon: "fas fa-magic",
-        category: "click",
-        unlockRequirement: 200
-      },
-      {
-        name: "Golden Touch",
-        description: "+5 Kush per click",
-        baseCost: 2000,
-        costMultiplier: 150,
-        clickPowerIncrease: 5,
-        autoIncomeIncrease: 0,
-        icon: "fas fa-gem",
-        category: "special",
-        unlockRequirement: 1000
-      },
-      {
-        name: "Kush Farm",
-        description: "+5 Kush per second",
-        baseCost: 5000,
-        costMultiplier: 150,
-        clickPowerIncrease: 0,
-        autoIncomeIncrease: 18000, // 5 per second = 18000 per hour
-        icon: "fas fa-seedling",
-        category: "auto",
-        unlockRequirement: 2500
-      }
+      // Click Power Upgrades
+      { name: "Better Fingers", description: "+1 Kush per click", baseCost: 15, costMultiplier: 150, clickPowerIncrease: 1, autoIncomeIncrease: 0, icon: "fas fa-hand-pointer", category: "click", unlockRequirement: 0 },
+      { name: "Lucky Fingers", description: "+2 Kush per click", baseCost: 500, costMultiplier: 150, clickPowerIncrease: 2, autoIncomeIncrease: 0, icon: "fas fa-magic", category: "click", unlockRequirement: 200 },
+      { name: "Golden Touch", description: "+5 Kush per click", baseCost: 2000, costMultiplier: 150, clickPowerIncrease: 5, autoIncomeIncrease: 0, icon: "fas fa-gem", category: "special", unlockRequirement: 1000 },
+      { name: "Diamond Fingers", description: "+10 Kush per click", baseCost: 10000, costMultiplier: 150, clickPowerIncrease: 10, autoIncomeIncrease: 0, icon: "fas fa-diamond", category: "click", unlockRequirement: 5000 },
+      { name: "Master Harvester", description: "+25 Kush per click", baseCost: 50000, costMultiplier: 150, clickPowerIncrease: 25, autoIncomeIncrease: 0, icon: "fas fa-crown", category: "special", unlockRequirement: 25000 },
+      
+      // Auto Income Upgrades
+      { name: "Auto Clicker", description: "+0.5 Kush per second", baseCost: 100, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 1800, icon: "fas fa-mouse-pointer", category: "auto", unlockRequirement: 50 },
+      { name: "Kush Farm", description: "+5 Kush per second", baseCost: 5000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 18000, icon: "fas fa-seedling", category: "auto", unlockRequirement: 2500 },
+      { name: "Greenhouse Operation", description: "+15 Kush per second", baseCost: 25000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 54000, icon: "fas fa-warehouse", category: "auto", unlockRequirement: 15000 },
+      { name: "Hydroponic System", description: "+35 Kush per second", baseCost: 100000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 126000, icon: "fas fa-flask", category: "auto", unlockRequirement: 50000 },
+      { name: "Cannabis Corporation", description: "+100 Kush per second", baseCost: 500000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 360000, icon: "fas fa-building", category: "business", unlockRequirement: 250000 },
+      
+      // Business Upgrades
+      { name: "Dispensary License", description: "+50 Kush per second", baseCost: 250000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 180000, icon: "fas fa-certificate", category: "business", unlockRequirement: 100000 },
+      { name: "Distribution Network", description: "+200 Kush per second", baseCost: 1000000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 720000, icon: "fas fa-shipping-fast", category: "business", unlockRequirement: 500000 },
+      { name: "International Export", description: "+500 Kush per second", baseCost: 5000000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 1800000, icon: "fas fa-globe", category: "business", unlockRequirement: 2500000 },
+      
+      // Research & Development
+      { name: "Strain Research Lab", description: "+75 Kush per second + 15 per click", baseCost: 750000, costMultiplier: 150, clickPowerIncrease: 15, autoIncomeIncrease: 270000, icon: "fas fa-microscope", category: "research", unlockRequirement: 300000 },
+      { name: "Genetic Engineering", description: "+150 Kush per second + 30 per click", baseCost: 2500000, costMultiplier: 150, clickPowerIncrease: 30, autoIncomeIncrease: 540000, icon: "fas fa-dna", category: "research", unlockRequirement: 1000000 },
+      { name: "AI Growing Assistant", description: "+300 Kush per second + 50 per click", baseCost: 10000000, costMultiplier: 150, clickPowerIncrease: 50, autoIncomeIncrease: 1080000, icon: "fas fa-robot", category: "tech", unlockRequirement: 5000000 },
+      
+      // Ultimate Upgrades
+      { name: "Kush Empire", description: "+1000 Kush per second + 100 per click", baseCost: 25000000, costMultiplier: 150, clickPowerIncrease: 100, autoIncomeIncrease: 3600000, icon: "fas fa-chess-king", category: "ultimate", unlockRequirement: 10000000 },
+      { name: "Galactic Cannabis Trade", description: "+2500 Kush per second + 200 per click", baseCost: 100000000, costMultiplier: 150, clickPowerIncrease: 200, autoIncomeIncrease: 9000000, icon: "fas fa-rocket", category: "ultimate", unlockRequirement: 50000000 }
     ];
 
     defaultUpgrades.forEach(upgrade => {
@@ -184,7 +157,7 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    defaultAchievements.forEach(achievement => {
+    FIFTY_ACHIEVEMENTS.forEach(achievement => {
       const id = randomUUID();
       this.achievements.set(id, { ...achievement, id });
     });
@@ -342,63 +315,35 @@ export class DatabaseStorage implements IStorage {
     const existingUpgrades = await this.db.select().from(upgrades).limit(1);
     if (existingUpgrades.length > 0) return;
 
-    // Initialize default upgrades
+    // Initialize expanded upgrades for growing cannabis operation (Database Version)
     const defaultUpgrades: InsertUpgrade[] = [
-      {
-        name: "Better Fingers",
-        description: "+1 Kush per click",
-        baseCost: 15,
-        costMultiplier: 150,
-        clickPowerIncrease: 1,
-        autoIncomeIncrease: 0,
-        icon: "fas fa-hand-pointer",
-        category: "click",
-        unlockRequirement: 0
-      },
-      {
-        name: "Auto Clicker",
-        description: "+0.5 Kush per second",
-        baseCost: 100,
-        costMultiplier: 150,
-        clickPowerIncrease: 0,
-        autoIncomeIncrease: 1800,
-        icon: "fas fa-mouse-pointer",
-        category: "auto",
-        unlockRequirement: 50
-      },
-      {
-        name: "Lucky Fingers",
-        description: "+2 Kush per click",
-        baseCost: 500,
-        costMultiplier: 150,
-        clickPowerIncrease: 2,
-        autoIncomeIncrease: 0,
-        icon: "fas fa-magic",
-        category: "click",
-        unlockRequirement: 200
-      },
-      {
-        name: "Golden Touch",
-        description: "+5 Kush per click",
-        baseCost: 2000,
-        costMultiplier: 150,
-        clickPowerIncrease: 5,
-        autoIncomeIncrease: 0,
-        icon: "fas fa-gem",
-        category: "special",
-        unlockRequirement: 1000
-      },
-      {
-        name: "Kush Farm",
-        description: "+5 Kush per second",
-        baseCost: 5000,
-        costMultiplier: 150,
-        clickPowerIncrease: 0,
-        autoIncomeIncrease: 18000,
-        icon: "fas fa-seedling",
-        category: "auto",
-        unlockRequirement: 2500
-      }
+      // Click Power Upgrades
+      { name: "Better Fingers", description: "+1 Kush per click", baseCost: 15, costMultiplier: 150, clickPowerIncrease: 1, autoIncomeIncrease: 0, icon: "fas fa-hand-pointer", category: "click", unlockRequirement: 0 },
+      { name: "Lucky Fingers", description: "+2 Kush per click", baseCost: 500, costMultiplier: 150, clickPowerIncrease: 2, autoIncomeIncrease: 0, icon: "fas fa-magic", category: "click", unlockRequirement: 200 },
+      { name: "Golden Touch", description: "+5 Kush per click", baseCost: 2000, costMultiplier: 150, clickPowerIncrease: 5, autoIncomeIncrease: 0, icon: "fas fa-gem", category: "special", unlockRequirement: 1000 },
+      { name: "Diamond Fingers", description: "+10 Kush per click", baseCost: 10000, costMultiplier: 150, clickPowerIncrease: 10, autoIncomeIncrease: 0, icon: "fas fa-diamond", category: "click", unlockRequirement: 5000 },
+      { name: "Master Harvester", description: "+25 Kush per click", baseCost: 50000, costMultiplier: 150, clickPowerIncrease: 25, autoIncomeIncrease: 0, icon: "fas fa-crown", category: "special", unlockRequirement: 25000 },
+      
+      // Auto Income Upgrades
+      { name: "Auto Clicker", description: "+0.5 Kush per second", baseCost: 100, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 1800, icon: "fas fa-mouse-pointer", category: "auto", unlockRequirement: 50 },
+      { name: "Kush Farm", description: "+5 Kush per second", baseCost: 5000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 18000, icon: "fas fa-seedling", category: "auto", unlockRequirement: 2500 },
+      { name: "Greenhouse Operation", description: "+15 Kush per second", baseCost: 25000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 54000, icon: "fas fa-warehouse", category: "auto", unlockRequirement: 15000 },
+      { name: "Hydroponic System", description: "+35 Kush per second", baseCost: 100000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 126000, icon: "fas fa-flask", category: "auto", unlockRequirement: 50000 },
+      { name: "Cannabis Corporation", description: "+100 Kush per second", baseCost: 500000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 360000, icon: "fas fa-building", category: "business", unlockRequirement: 250000 },
+      
+      // Business Upgrades
+      { name: "Dispensary License", description: "+50 Kush per second", baseCost: 250000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 180000, icon: "fas fa-certificate", category: "business", unlockRequirement: 100000 },
+      { name: "Distribution Network", description: "+200 Kush per second", baseCost: 1000000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 720000, icon: "fas fa-shipping-fast", category: "business", unlockRequirement: 500000 },
+      { name: "International Export", description: "+500 Kush per second", baseCost: 5000000, costMultiplier: 150, clickPowerIncrease: 0, autoIncomeIncrease: 1800000, icon: "fas fa-globe", category: "business", unlockRequirement: 2500000 },
+      
+      // Research & Development
+      { name: "Strain Research Lab", description: "+75 Kush per second + 15 per click", baseCost: 750000, costMultiplier: 150, clickPowerIncrease: 15, autoIncomeIncrease: 270000, icon: "fas fa-microscope", category: "research", unlockRequirement: 300000 },
+      { name: "Genetic Engineering", description: "+150 Kush per second + 30 per click", baseCost: 2500000, costMultiplier: 150, clickPowerIncrease: 30, autoIncomeIncrease: 540000, icon: "fas fa-dna", category: "research", unlockRequirement: 1000000 },
+      { name: "AI Growing Assistant", description: "+300 Kush per second + 50 per click", baseCost: 10000000, costMultiplier: 150, clickPowerIncrease: 50, autoIncomeIncrease: 1080000, icon: "fas fa-robot", category: "tech", unlockRequirement: 5000000 },
+      
+      // Ultimate Upgrades
+      { name: "Kush Empire", description: "+1000 Kush per second + 100 per click", baseCost: 25000000, costMultiplier: 150, clickPowerIncrease: 100, autoIncomeIncrease: 3600000, icon: "fas fa-chess-king", category: "ultimate", unlockRequirement: 10000000 },
+      { name: "Galactic Cannabis Trade", description: "+2500 Kush per second + 200 per click", baseCost: 100000000, costMultiplier: 150, clickPowerIncrease: 200, autoIncomeIncrease: 9000000, icon: "fas fa-rocket", category: "ultimate", unlockRequirement: 50000000 }
     ];
 
     await this.db.insert(upgrades).values(defaultUpgrades);

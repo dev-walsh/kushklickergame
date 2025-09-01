@@ -1,10 +1,14 @@
-# KushKlicker - Cannabis-Themed Telegram Web Game
+# 🌿 Kush Klicker - Cannabis Incremental Game
 
-A cannabis-themed incremental clicker game optimized for Telegram Web Apps with clean, mobile-first design. Players click to earn KUSH tokens, purchase upgrades, unlock achievements, and compete on leaderboards.
+![Kush Klicker](https://img.shields.io/badge/Game-Cannabis%20Clicker-green?style=for-the-badge&logo=cannabis)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Telegram%20WebApp-blue?style=for-the-badge&logo=telegram)
 
-**✅ FULLY FUNCTIONAL** - Game is working perfectly with Telegram integration, visible navigation, and persistent database storage.
+🌿 **Kush Klicker** is a cannabis-themed incremental clicker game with real Solana wallet integration, 50 comprehensive achievements, 18 upgrade tiers, rich UI animations, and Telegram WebApp deployment. Players click to earn KUSH currency, purchase upgrades to automate their cannabis operation, unlock achievements, and compete on leaderboards.
 
-**🚫 GAMBLING-FREE** - All casino/gambling features have been removed for Telegram compliance.
+**✅ PRODUCTION READY** - Fully deployed and working through Telegram with comprehensive features and multi-agent development support.
+
+**🚫 GAMBLING-FREE** - Complies with Telegram policies with no casino or gambling mechanics.
 
 ## 🎮 Game Features
 

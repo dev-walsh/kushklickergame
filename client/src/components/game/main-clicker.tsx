@@ -79,9 +79,9 @@ export default function MainClicker({ gameState, onClickEffect }: MainClickerPro
         <button
           onClick={handleClick}
           disabled={clickMutation.isPending}
-          className={`kush-button w-48 h-48 md:w-64 md:h-64 rounded-full flex flex-col items-center justify-center text-white font-bold text-xl md:text-2xl shadow-2xl relative overflow-hidden ${
-            isClicking ? 'click-animation' : ''
-          } ${clickMutation.isPending ? 'opacity-70' : ''}`}
+          className={`kush-button w-48 h-48 md:w-64 md:h-64 rounded-full flex flex-col items-center justify-center text-white font-bold text-xl md:text-2xl shadow-2xl relative overflow-hidden animate-float hover:animate-glow ${
+            isClicking ? 'animate-kush-click click-animation' : ''
+          } ${clickMutation.isPending ? 'opacity-70' : ''} transition-all duration-200`}
           data-testid="button-main-kush"
         >
           <i className="fas fa-cannabis text-4xl md:text-6xl mb-2"></i>
