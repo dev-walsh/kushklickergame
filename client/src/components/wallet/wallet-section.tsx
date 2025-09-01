@@ -1,4 +1,4 @@
-import WalletConnect from './wallet-connect';
+import RealWalletConnect from './real-wallet-connect';
 import TelegramConnect from '@/components/telegram/telegram-connect';
 import { useQueryClient } from '@tanstack/react-query';
 import type { SolanaNetwork } from '@/lib/solana-config';
@@ -37,7 +37,7 @@ export default function WalletSection({ gameState }: WalletSectionProps) {
         onConnectionUpdate={handleTelegramConnectionUpdate}
       />
 
-      <WalletConnect gameState={{
+      <RealWalletConnect gameState={{
         ...gameState,
         walletAddress: gameState.walletAddress || null,
         solanaNetwork: gameState.solanaNetwork || "devnet",
